@@ -116,23 +116,6 @@
                 var status = $("#reply_leave_status").val()
                 if (status == '1' || status == '-1'){
 
-    $.ajax({
-        url: "{% url 'view_staff_leave' %}",
-        type:'POST',
-        data:{
-              id:id,
-              status:status
-        }
-    }).done(function(response){
-        if (response == "True"){
-            alert("Leave Response Has Been Saved!")
-            location.reload()
-        }else{
-            alert("Reply Could Not Be Sent")
-        }
-    }).fail(function(response){
-        alert("Error Occured. ")
-    })
 }else{
     alert("Choose valid response")
 }

@@ -50,7 +50,6 @@ urlpatterns = [
          name="staff_feedback_message",),
     path("student/view/leave/", hod_views.view_student_leave,
          name="view_student_leave",),
-    path("staff/view/leave/", hod_views.view_staff_leave, name="view_staff_leave",),
     path("attendance/view/", hod_views.admin_view_attendance,
          name="admin_view_attendance",),
     path("attendance/fetch/", hod_views.get_admin_attendance,

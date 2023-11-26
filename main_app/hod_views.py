@@ -113,7 +113,7 @@ def add_course(request):
     form = CourseForm(request.POST or None)
     context = {
         'form': form,
-        'page_title': 'Add Course'
+        'page_title': 'Add Class'
     }
     if request.method == 'POST':
         if form.is_valid():
@@ -181,7 +181,7 @@ def manage_course(request):
     courses = Course.objects.all()
     context = {
         'courses': courses,
-        'page_title': 'Manage Courses'
+        'page_title': 'Manage Classes'
     }
     return render(request, "hod_template/manage_course.html", context)
 
@@ -299,7 +299,7 @@ def edit_course(request, course_id):
     context = {
         'form': form,
         'course_id': course_id,
-        'page_title': 'Edit Course'
+        'page_title': 'Edit Class'
     }
     if request.method == 'POST':
         if form.is_valid():
@@ -444,29 +444,6 @@ def staff_feedback_message(request):
             return HttpResponse(False)
 
 
-@csrf_exempt
-def view_staff_leave(request):
-    if request.method != 'POST':
-        allLeave = LeaveReportStaff.objects.all()
-        context = {
-            'allLeave': allLeave,
-            'page_title': 'Leave Applications From Staff'
-        }
-        return render(request, "hod_template/staff_leave_view.html", context)
-    else:
-        id = request.POST.get('id')
-        status = request.POST.get('status')
-        if (status == '1'):
-            status = 1
-        else:
-            status = -1
-        try:
-            leave = get_object_or_404(LeaveReportStaff, id=id)
-            leave.status = status
-            leave.save()
-            return HttpResponse(True)
-        except Exception as e:
-            return False
 
 
 @csrf_exempt
