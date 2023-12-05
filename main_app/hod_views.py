@@ -506,6 +506,10 @@ def get_admin_attendance(request):
     except Exception as e:
         return None
 
+def view_student(request,student_id):
+    student = get_object_or_404(CustomUser, student__id=student_id)
+    return render(request, "hod_template/admin_view_student.html",{'student':student})
+
 
 def admin_view_profile(request):
     admin = get_object_or_404(Admin, admin=request.user)

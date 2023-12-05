@@ -1,0 +1,32 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block page_title %}{{page_title}}{% endblock page_title %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Student Details</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="{{ student.profile_pic }}" alt="Profile Picture" class="img-fluid">
+                            </div>
+                            <div class="col-md-6">
+                                <h4>{{ student.get_full_name }}</h4>
+                                <p>Email: {{ student.email }}</p>
+                                <p>Address: {{ student.address }}</p>
+                                <p>Gender: {{ student.get_gender_display }}</p>
+                                <!-- Add more details as needed -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

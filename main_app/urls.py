@@ -63,7 +63,8 @@ urlpatterns = [
     path("staff/edit/<int:staff_id>", hod_views.edit_staff, name='edit_staff'),
     path("staff/delete/<int:staff_id>",
          hod_views.delete_staff, name='delete_staff'),
-
+path("student/view/<int:student_id>",
+         hod_views.view_student, name='view_student'),
     path("course/delete/<int:course_id>",
          hod_views.delete_course, name='delete_course'),
 
