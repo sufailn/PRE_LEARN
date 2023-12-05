@@ -1,5 +1,5 @@
 from django import forms
-from django.forms.widgets import DateInput, TextInput
+from django.forms.widgets import DateInput, TextInput,NumberInput
 
 from .models import *
 
@@ -17,6 +17,11 @@ class CustomUserForm(FormSettings):
     gender = forms.ChoiceField(choices=[('M', 'Male'), ('F', 'Female')])
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
+    phone_number = forms.CharField(
+        label="Phone Number", max_length=10, min_length=10, required=True,
+        widget=NumberInput(attrs={'class': 'form-control'}),
+        help_text="Enter a 10-digit phone number."
+    )
     address = forms.CharField(widget=forms.Textarea)
     password = forms.CharField(widget=forms.PasswordInput)
     widget = {
