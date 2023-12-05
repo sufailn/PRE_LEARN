@@ -149,6 +149,8 @@ def student_view_profile(request):
                 last_name = form.cleaned_data.get('last_name')
                 password = form.cleaned_data.get('password') or None
                 address = form.cleaned_data.get('address')
+                
+                phone_number = form.cleaned_data.get('phone_number')
                 gender = form.cleaned_data.get('gender')
                 passport = request.FILES.get('profile_pic') or None
                 admin = student.admin
@@ -162,6 +164,7 @@ def student_view_profile(request):
                 admin.first_name = first_name
                 admin.last_name = last_name
                 admin.address = address
+                admin.phone_number = phone_number
                 admin.gender = gender
                 admin.save()
                 student.save()

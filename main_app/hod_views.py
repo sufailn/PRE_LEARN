@@ -49,6 +49,7 @@ def add_staff(request):
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
             address = form.cleaned_data.get('address')
+            phone_number = form.cleaned_data.get('phone_number')
             email = form.cleaned_data.get('email')
             gender = form.cleaned_data.get('gender')
             password = form.cleaned_data.get('password')
@@ -62,6 +63,8 @@ def add_staff(request):
                     email=email, password=password, user_type=2, first_name=first_name, last_name=last_name, profile_pic=passport_url)
                 user.gender = gender
                 user.address = address
+                user.phone_number = phone_number
+                
                 user.staff.course = course
                 user.save()
                 messages.success(request, "Successfully Added")
@@ -83,6 +86,7 @@ def add_student(request):
             first_name = student_form.cleaned_data.get('first_name')
             last_name = student_form.cleaned_data.get('last_name')
             address = student_form.cleaned_data.get('address')
+            phone_number = student_form.cleaned_data.get('phone_number')
             email = student_form.cleaned_data.get('email')
             gender = student_form.cleaned_data.get('gender')
             password = student_form.cleaned_data.get('password')
@@ -99,6 +103,7 @@ def add_student(request):
                 user.address = address
                 user.student.session = session
                 user.student.course = course
+                user.phone_number = phone_number
                 user.save()
                 messages.success(request, "Successfully Added")
                 return redirect(reverse('add_student'))
@@ -208,6 +213,8 @@ def edit_staff(request, staff_id):
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
             address = form.cleaned_data.get('address')
+            phone_number = form.cleaned_data.get('phone_number')
+            
             username = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
             gender = form.cleaned_data.get('gender')
@@ -229,6 +236,7 @@ def edit_staff(request, staff_id):
                 user.last_name = last_name
                 user.gender = gender
                 user.address = address
+                user.phone_number = phone_number
                 staff.course = course
                 user.save()
                 staff.save()
@@ -257,6 +265,7 @@ def edit_student(request, student_id):
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
             address = form.cleaned_data.get('address')
+            phone_number = form.cleaned_data.get('phone_number')
             username = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
             gender = form.cleaned_data.get('gender')
@@ -280,6 +289,7 @@ def edit_student(request, student_id):
                 student.session = session
                 user.gender = gender
                 user.address = address
+                user.phone_number = phone_number
                 student.course = course
                 user.save()
                 student.save()
@@ -508,6 +518,7 @@ def get_admin_attendance(request):
 
 def view_student(request,student_id):
     student = get_object_or_404(CustomUser, student__id=student_id)
+    print('pkhone',student.phone_number)
     return render(request, "hod_template/admin_view_student.html",{'student':student})
 
 
