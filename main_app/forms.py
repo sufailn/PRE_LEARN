@@ -17,7 +17,7 @@ class CustomUserForm(FormSettings):
     gender = forms.ChoiceField(choices=[('M', 'Male'), ('F', 'Female')])
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
-    phone_number = forms.CharField(widget=forms.NumberInput)
+    phone_number = forms.CharField(widget=forms.NumberInput,max_length=10)
     address = forms.CharField(widget=forms.Textarea)
     password = forms.CharField(widget=forms.PasswordInput)
     widget = {

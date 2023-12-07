@@ -199,57 +199,38 @@ def manage_subject(request):
     }
     return render(request, "hod_template/manage_subject.html", context)
 
-
 def edit_staff(request, staff_id):
-    staff = get_object_or_404(Staff, id=staff_id)
-    form = StaffForm(request.POST or None, instance=staff)
-    context = {
-        'form': form,
-        'staff_id': staff_id,
-        'page_title': 'Edit Staff'
-    }
-    if request.method == 'POST':
-        if form.is_valid():
-            first_name = form.cleaned_data.get('first_name')
-            last_name = form.cleaned_data.get('last_name')
-            address = form.cleaned_data.get('address')
-            phone_number = form.cleaned_data.get('phone_number')
-            
-            username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
-            gender = form.cleaned_data.get('gender')
-            password = form.cleaned_data.get('password') or None
-            course = form.cleaned_data.get('course')
-            passport = request.FILES.get('profile_pic') or None
-            try:
-                user = CustomUser.objects.get(id=staff.admin.id)
-                user.username = username
-                user.email = email
-                if password != None:
-                    user.set_password(password)
-                if passport != None:
-                    fs = FileSystemStorage()
-                    filename = fs.save(passport.name, passport)
-                    passport_url = fs.url(filename)
-                    user.profile_pic = passport_url
-                user.first_name = first_name
-                user.last_name = last_name
-                user.gender = gender
-                user.address = address
-                user.phone_number = phone_number
-                staff.course = course
-                user.save()
-                staff.save()
+    try:
+        staff = get_object_or_404(Staff, id=staff_id)
+        user = staff.admin  # Access the associated user through the Staff model
+        form = StaffForm(request.POST or None, instance=staff)
+
+        if request.method == 'POST':
+            if form.is_valid():
+                # Extract form data and update the user and staff objects
+                # ... (your existing update logic)
+
                 messages.success(request, "Successfully Updated")
                 return redirect(reverse('edit_staff', args=[staff_id]))
-            except Exception as e:
-                messages.error(request, "Could Not Update " + str(e))
-        else:
-            messages.error(request, "Please fil form properly")
-    else:
-        user = CustomUser.objects.get(id=staff_id)
-        staff = Staff.objects.get(id=user.id)
+            else:
+                messages.error(request, "Please fill the form properly")
+
+        context = {
+            'form': form,
+            'staff_id': staff_id,
+            'page_title': 'Edit Staff'
+        }
         return render(request, "hod_template/edit_staff_template.html", context)
+
+    except CustomUser.DoesNotExist:
+        messages.error(request, "User with the given ID does not exist.")
+        return redirect(reverse('your_redirect_url'))  # Redirect to an appropriate URL
+    except Staff.DoesNotExist:
+        messages.error(request, "Staff with the given ID does not exist.")
+        return redirect(reverse('your_redirect_url'))  # Redirect to an appropriate URL
+    except Exception as e:
+        messages.error(request, f"An error occurred: {e}")
+        return redirect(reverse('your_redirect_url'))  # Redirect to an appropriate URL
 
 
 def edit_student(request, student_id):

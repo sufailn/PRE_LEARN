@@ -52,38 +52,47 @@ def student_home(request):
     return render(request, 'student_template/home_content.html', context)
 
 
-@ csrf_exempt
+@csrf_exempt
 def student_view_attendance(request):
-    student = get_object_or_404(Student, admin=request.user)
-    if request.method != 'POST':
-        course = get_object_or_404(Course, id=student.course.id)
-        context = {
-            'subjects': Subject.objects.filter(course=course),
-            'page_title': 'View Attendance'
-        }
-        return render(request, 'student_template/student_view_attendance.html', context)
-    else:
-        subject_id = request.POST.get('subject')
-        start = request.POST.get('start_date')
-        end = request.POST.get('end_date')
-        try:
+    try:
+        student = get_object_or_404(Student, admin=request.user)
+        if request.method != 'POST':
+            course = get_object_or_404(Course, id=student.course.id)
+            context = {
+                'subjects': Subject.objects.filter(course=course),
+                'page_title': 'View Attendance'
+            }
+            return render(request, 'student_template/student_view_attendance.html', context)
+        else:
+            subject_id = request.POST.get('subject')
+            start = request.POST.get('start_date')
+            end = request.POST.get('end_date')
+
             subject = get_object_or_404(Subject, id=subject_id)
             start_date = datetime.strptime(start, "%Y-%m-%d")
             end_date = datetime.strptime(end, "%Y-%m-%d")
+
+            # Use filter() instead of get() to handle the case where no Attendance object is found
             attendance = Attendance.objects.filter(
                 date__range=(start_date, end_date), subject=subject)
+
+            # Use filter() instead of get() to handle the case where no AttendanceReport object is found
             attendance_reports = AttendanceReport.objects.filter(
                 attendance__in=attendance, student=student)
+
             json_data = []
             for report in attendance_reports:
                 data = {
-                    "date":  str(report.attendance.date),
+                    "date": str(report.attendance.date),
                     "status": report.status
                 }
                 json_data.append(data)
+
             return JsonResponse(json.dumps(json_data), safe=False)
-        except Exception as e:
-            return None
+    except Exception as e:
+        # Log the error or handle it appropriately
+        print(f"An error occurred: {e}")
+        return JsonResponse({"error": "attendence is not uploaded"}, status=500)
 
 
 def student_apply_leave(request):
